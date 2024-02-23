@@ -39,3 +39,7 @@ function getNumber (string) {
 
   return Number(numberString);
 }
+
+checkStringLength();
+checkPalindrome();
+getNumber();
