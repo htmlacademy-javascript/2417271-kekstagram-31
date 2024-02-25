@@ -1,35 +1,28 @@
-function checkStringLength (string, lenght) {
-  return string.length <= lenght;
-}
+const checkStringLength = (string = '', lenght = 1) => string.length <= lenght;
 
-function checkPalindrome (string) {
-  let reverseString = '';
-  string = string.replaceAll(' ', '');
-  string = string.toLowerCase();
+const checkPalindrome = (string) => {
+  let normalizedString =  string.replaceAll(' ', '').toLowerCase();
+  let reverseString = normalizedString.split('').reverse().join('');
 
-  for (let char = string.length - 1; char >= 0; char--) {
-    reverseString += string[char];
-  }
+  return normalizedString === reverseString;
+};
 
-  return string === reverseString;
-}
-
-function getNumber (string) {
+const getNumber = (string) => {
   if (string === Math.round(string)) {
     return Math.abs(string);
   }
 
   let numberString = '';
+  let normalizedString = string;
 
   if (typeof string !== 'string') {
-    string = String(string);
+    normalizedString = String(string);
   }
 
-  for (let char = 0; char < string.length; char++) {
-    const charString = parseInt(string[char], 10);
+  for (let char = 0; char < normalizedString.length; char++) {
 
-    if (!(Number.isNaN(charString))) {
-      numberString += string[char];
+    if (!(Number.isNaN(parseInt(normalizedString[char], 10)))) {
+      numberString += normalizedString[char];
     }
   }
 
@@ -38,8 +31,8 @@ function getNumber (string) {
   }
 
   return Number(numberString);
-}
+};
 
 checkStringLength();
-checkPalindrome();
+checkPalindrome('');
 getNumber();
