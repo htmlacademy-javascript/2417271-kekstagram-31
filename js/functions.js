@@ -43,7 +43,7 @@ const addToString = (string = '', minLength = 1, adder = '') => {
   const amountFullAdder = Math.floor(adderLength / adder.length);
   let adderChars = adder;
 
-  if (adder.length > 0) {
+  if (adder.length > 1) {
     adderChars = adder.split('');
   }
 
