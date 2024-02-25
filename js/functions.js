@@ -1,8 +1,8 @@
 const checkStringLength = (string = '', lenght = 1) => string.length <= lenght;
 
 const checkPalindrome = (string) => {
-  let normalizedString =  string.replaceAll(' ', '').toLowerCase();
-  let reverseString = normalizedString.split('').reverse().join('');
+  const normalizedString = string.replaceAll(' ', '').toLowerCase();
+  const reverseString = normalizedString.split('').reverse().join('');
 
   return normalizedString === reverseString;
 };
