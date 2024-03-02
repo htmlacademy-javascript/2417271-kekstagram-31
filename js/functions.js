@@ -82,8 +82,8 @@ const validateMeeting = (workdayStart = '', workdayEnd = '', meetingStart = '', 
   } else if (normalizedWorkdayStart[0] === normalizedMeetingStart[0]) {
     if (normalizedWorkdayStart[1] > normalizedMeetingStart[1]) {
       return false;
-    };
-  };
+    }
+  }
 
   // если время встречи после окончания рабочего дня
   if (normalizedWorkdayEnd[0] < normalizedMeetingStart[0]) {
@@ -91,8 +91,8 @@ const validateMeeting = (workdayStart = '', workdayEnd = '', meetingStart = '', 
   } else if (normalizedWorkdayEnd[0] === normalizedMeetingStart[0]) {
     if (normalizedWorkdayEnd[1] < normalizedMeetingStart[1]) {
       return false;
-    };
-  };
+    }
+  }
 
   // длительность встречи
   const workdayPeriodInMinuts = (normalizedWorkdayEnd[0] * 60 + normalizedWorkdayEnd[1]) - (normalizedWorkdayStart[0] * 60 + normalizedWorkdayStart[1]);
