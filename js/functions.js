@@ -60,7 +60,4 @@ const addToString = (string = '', minLength = 1, adder = '') => {
   return addedString;
 };
 
-checkStringLength();
-checkPalindrome('');
-getNumber();
-addToString();
+export {checkStringLength, checkPalindrome, getNumber, addToString};
