@@ -1,12 +1,11 @@
 import {getDataToGenerateThread} from './data.js';
 import {getRandomLimitInteger,
-  getRandomUniqueInteger,
+  createUniqueIdGenerator,
   getRandomArrayElement} from './utils.js';
 
 // основные функции
 const { DESCRIPTIONS, COMMENT_MESSAGES, NAMES, SETTING_POSTS, SETTING_COMMENT } = getDataToGenerateThread();
-const generateCommentId = getRandomUniqueInteger(0, 1000); //в задании не задан лимит значений
-const generatePostId = getRandomUniqueInteger(SETTING_POSTS.idMinLimit, SETTING_POSTS.idMaxLimit);
+const generateCommentId = createUniqueIdGenerator();
 
 const generateComment = () => ({
   id: generateCommentId(),
@@ -16,23 +15,16 @@ const generateComment = () => ({
 });
 
 
-const generatePost = () => {
-  const postId = generatePostId();
-  return {
-    id: postId,
-    url: `photos/${postId}.jpg`,
-    description: getRandomArrayElement(DESCRIPTIONS),
-    likes: getRandomLimitInteger(SETTING_POSTS.likesMinLimit, SETTING_POSTS.likesMaxLimit),
-    comments: Array.from({ length: getRandomLimitInteger(SETTING_COMMENT.commentsMinLimit, SETTING_COMMENT.commentsMaxLimit) }, generateComment)
-  };
-};
+const generatePost = (_, index) => ({
+  id: index + 1,
+  url: `photos/${index + 1}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomLimitInteger(SETTING_POSTS.likesMinLimit, SETTING_POSTS.likesMaxLimit),
+  comments: Array.from({ length: getRandomLimitInteger(SETTING_COMMENT.commentsMinLimit, SETTING_COMMENT.commentsMaxLimit) }, generateComment)
+});
 
-const generateThread = () => {
-  const thread = [];
-  while (thread.length < SETTING_POSTS.amountPosts) {
-    thread.push(generatePost());
-  }
-  return thread;
-};
+const generateThread = () => Array.from({ length: SETTING_POSTS.amountPosts }, generatePost);
+
+generateThread();
 
 export {generateThread};
