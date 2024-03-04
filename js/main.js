@@ -54,26 +54,35 @@ const getRandomLimitInteger = (min, max) => {
   return Math.floor(result);
 };
 
-const getRandomUniqueInteger = (min, max) => {
-  const valuesCollection = [];
-  return function () {
-    if (valuesCollection.length >= (max - min + 1)) {
-      return null;
-    }
-    let currentValue = getRandomLimitInteger(min, max);
-    while (valuesCollection.includes(currentValue)) {
-      currentValue = getRandomLimitInteger(min, max);
-    }
-    valuesCollection.push(currentValue);
-    return currentValue;
+// В течение раздела нас заметно направляли в сторону написания такой функции, так что пока оставляю на случай, если понадобится где-то позже
+// const getRandomUniqueInteger = (min, max) => {
+//   const valuesCollection = [];
+//   return function () {
+//     if (valuesCollection.length >= (max - min + 1)) {
+//       return null;
+//     }
+//     let currentValue = getRandomLimitInteger(min, max);
+//     while (valuesCollection.includes(currentValue)) {
+//       currentValue = getRandomLimitInteger(min, max);
+//     }
+//     valuesCollection.push(currentValue);
+//     return currentValue;
+//   };
+// };
+
+const createUniqueIdGenerator = () => {
+  let id = 1;
+  return () => {
+    const currentId = id;
+    id++;
+    return currentId;
   };
 };
 
 const getRandomArrayElement = (array) => array[getRandomLimitInteger(0, array.length - 1)];
 
 // основные функции
-const generateCommentId = getRandomUniqueInteger(0, 1000); //в задании не задан лимит
-const generatePostId = getRandomUniqueInteger(SETTING_POSTS.idMinLimit, SETTING_POSTS.idMaxLimit);
+const generateCommentId = createUniqueIdGenerator();
 
 const generateComment = () => ({
   id: generateCommentId(),
@@ -83,23 +92,14 @@ const generateComment = () => ({
 });
 
 
-const generatePost = () => {
-  const postId = generatePostId();
-  return {
-    id: postId,
-    url: `photos/${postId}.jpg`,
-    description: getRandomArrayElement(DESCRIPTIONS),
-    likes: getRandomLimitInteger(SETTING_POSTS.likesMinLimit, SETTING_POSTS.likesMaxLimit),
-    comments: Array.from({ length: getRandomLimitInteger(SETTING_COMMENT.commentsMinLimit, SETTING_COMMENT.commentsMaxLimit) }, generateComment)
-  };
-};
+const generatePost = (_, index) => ({
+  id: index + 1,
+  url: `photos/${index + 1}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomLimitInteger(SETTING_POSTS.likesMinLimit, SETTING_POSTS.likesMaxLimit),
+  comments: Array.from({ length: getRandomLimitInteger(SETTING_COMMENT.commentsMinLimit, SETTING_COMMENT.commentsMaxLimit) }, generateComment)
+});
 
-const generateThread = () => {
-  const thread = [];
-  while (thread.length < SETTING_POSTS.amountPosts) {
-    thread.push(generatePost());
-  }
-  return thread;
-};
+const generateThread = () => Array.from({ length: SETTING_POSTS.amountPosts }, generatePost);
 
 generateThread();
