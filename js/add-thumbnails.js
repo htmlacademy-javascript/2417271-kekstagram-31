@@ -1,18 +1,6 @@
 import {generateThread} from './generate-thread.js';
 
-// На основе временных данных для разработки и шаблона создайте DOM-элементы, соответствующие фотографиям, и заполните их данными:
-
-/* <template id="picture">
-<a href="#" class="picture">
-  <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография"> img.src = post.url, alt = post.description  !
-  <p class="picture__info">
-    <span class="picture__comments"></span>  textConten = post.comments.length                                                      !
-    <span class="picture__likes"></span>  textConten = post.likes                                                                   !
-  </p>
-</a>
-</template> */
-
-const thumbnailsContainer = document.querySelector('.pictures'); //контейнер. Для вставки элементов используйте DocumentFragment.
+const thumbnailsContainer = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const thumbnailsData = generateThread();
 
