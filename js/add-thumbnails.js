@@ -1,25 +1,25 @@
-import {generateThread} from './generate-thread.js';
-
-const thumbnailsContainer = document.querySelector('.pictures');
+const thumbnailsContainerEl = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const thumbnailsData = generateThread();
 
 const thumbnailsFragment = document.createDocumentFragment();
 
-const createThumbnail = (post) => {
+const createThumbnail = ({url, description, comments, likes}) => {
   const newThumbnail = thumbnailTemplate.cloneNode(true);
   const thumbnailImg = newThumbnail.querySelector('.picture__img');
   const thumbnailComments = newThumbnail.querySelector('.picture__comments');
   const thumbnailLikes = newThumbnail.querySelector('.picture__likes');
 
-  thumbnailImg.src = post.url;
-  thumbnailImg.alt = post.description;
-  thumbnailComments.textContent = post.comments.length;
-  thumbnailLikes.textContent = post.likes;
+  thumbnailImg.src = url;
+  thumbnailImg.alt = description;
+  thumbnailComments.textContent = comments.length;
+  thumbnailLikes.textContent = likes;
 
   thumbnailsFragment.append(newThumbnail);
 };
 
-thumbnailsData.forEach((thumbnailObj) => createThumbnail(thumbnailObj));
-thumbnailsContainer.append(thumbnailsFragment);
+const addThumbnails = (thumbnailsData) => {
+  thumbnailsData.forEach((thumbnailObj) => createThumbnail(thumbnailObj));
+  thumbnailsContainerEl.append(thumbnailsFragment);
+};
 
+export {addThumbnails};
