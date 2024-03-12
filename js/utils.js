@@ -33,4 +33,12 @@ const createUniqueIdGenerator = () => {
 
 const getRandomArrayElement = (array) => array[getRandomLimitInteger(0, array.length - 1)];
 
-export {getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement};
+const createElement = (tagName, className, textContent) => {
+  const newEl = document.createElement(tagName);
+  newEl.classList.add(className);
+  newEl.textContent = textContent;
+};
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement, createElement, isEscapeKey};
