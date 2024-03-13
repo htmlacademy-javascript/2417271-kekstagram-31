@@ -47,14 +47,14 @@ const showFullscreenPost = () => {
   fullscreenCommentsCountEl.classList.add('hidden');
   fullscreenCommentsLouderEl.classList.add('hidden');
   document.addEventListener('keydown', onEscKeydown);
-  document.addEventListener('click', onBackdropClick);
+  fullscreenPostEl.addEventListener('click', onBackdropClick);
 };
 
 const closeFullscreenPost = () => {
   fullscreenPostEl.classList.add('hidden');
   clearFullscreen();
   document.removeEventListener('keydown', onEscKeydown);
-  document.removeEventListener('click', onBackdropClick);
+  fullscreenPostEl.removeEventListener('click', onBackdropClick);
 };
 
 function onEscKeydown(evt) {
