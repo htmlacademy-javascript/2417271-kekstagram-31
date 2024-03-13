@@ -1,5 +1,5 @@
 import { createElement, isEscapeKey } from './utils.js';
-import { currentThread } from './generate-thread.js'; // я не придумала, как реализовать сопоставление миниатюр-полноразмерок без импорта сюда данных
+import { currentThread } from './generate-thread.js'; // я не придумала, как реализовать сопоставление миниатюр/полноразмерок без импорта сюда данных
 
 const thumbnailsContainerEl = document.querySelector('.pictures');
 const thumbnails = thumbnailsContainerEl.children;
@@ -10,8 +10,7 @@ const fullscreenDescriptionEl = fullscreenPostEl.querySelector('.social__caption
 const fullscreenLikesCountEl = fullscreenPostEl.querySelector('.likes-count');
 const fullscreenCommentsShownCountEl = fullscreenPostEl.querySelector('.social__comment-shown-count');
 const fullscreenCommentsTotalCountEl = fullscreenPostEl.querySelector('.social__comment-total-count');
-const fullscreenCommentsCountEl = fullscreenPostEl.querySelector('.social__comment-count');
-const fullscreenCommentsLouderEl = fullscreenPostEl.querySelector('.comments-loader');
+const commentsLouderEl = fullscreenPostEl.querySelector('.social__comments-loader');
 const commentsContainerEl = fullscreenPostEl.querySelector('.social__comments');
 
 const renderFullscreenComment = ({ avatar, message, name }) => {
@@ -26,16 +25,41 @@ const renderFullscreenComment = ({ avatar, message, name }) => {
   commentsContainerEl.append(newComment);
 };
 
+// const uploudeComments = (comments, evt) => {
+// const shownComments = commentsContainerEl.children.length;
+// for (let i = shownComments; i <= shownComments + 5; i++) {
+//   renderFullscreenComment(comments[i]);
+// }
+
+// const toLoudeButtonClick = (commentsArr) => {
+//   if (commentsLouderEl.matches(!'.hidden')) {
+//     commentsLouderEl.addEventListener('click', uploudeComments(commentsArr));
+//   } else {
+//     commentsLouderEl.removeEventListener('click', uploudeComments(commentsArr));
+//   }
+// };
+
 const renderFullscreenPost = (dataArr, evt) => {
   const indexClickedEl = Array.from(thumbnails).indexOf(evt.target.parentNode);
   const { url, description, comments, likes } = dataArr[indexClickedEl - 2]; //-2 потому что перед элементами-миниатюрами в контейнере 2 элемента: заголовок секции и секция для загрузки новых фоток
   fullscreenImgEl.src = url;
   fullscreenLikesCountEl.textContent = likes;
-  fullscreenCommentsShownCountEl.textContent = comments.length; //to-do: отделить количество показываемых комментариев
-  fullscreenCommentsTotalCountEl.textContent = comments.length;
   fullscreenDescriptionEl.textContent = description;
   commentsContainerEl.innerHTML = '';
-  comments.forEach((comment) => renderFullscreenComment(comment));
+
+  // тз: при открытии поста показаны 5 комментариев. В тз не указанно, первых/последних/т.п., поэтому первых
+  if (comments.length <= 5) {
+    comments.forEach((comment) => renderFullscreenComment(comment));
+    commentsLouderEl.classList.add('hidden');
+  } else {
+    for (let i = 0; i < 5; i++) {
+      renderFullscreenComment(comments[i]);
+      commentsLouderEl.classList.remove('hidden');
+    }
+  }
+
+  fullscreenCommentsShownCountEl.textContent = commentsContainerEl.children.length;
+  fullscreenCommentsTotalCountEl.textContent = comments.length;
 };
 
 const clearFullscreen = () => {
@@ -44,8 +68,6 @@ const clearFullscreen = () => {
 
 const showFullscreenPost = () => {
   fullscreenPostEl.classList.remove('hidden');
-  fullscreenCommentsCountEl.classList.add('hidden');
-  fullscreenCommentsLouderEl.classList.add('hidden');
   document.addEventListener('keydown', onEscKeydown);
   fullscreenPostEl.addEventListener('click', onBackdropClick);
 };
@@ -80,3 +102,4 @@ const onThumbnailClick = (evt) => {
 
 thumbnailsContainerEl.addEventListener('click', onThumbnailClick);
 closeFullscreenButtonEl.addEventListener('click', closeFullscreenPost);
+
