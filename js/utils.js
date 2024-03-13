@@ -36,9 +36,12 @@ const getRandomArrayElement = (array) => array[getRandomLimitInteger(0, array.le
 const createElement = (tagName, className, textContent) => {
   const newEl = document.createElement(tagName);
   newEl.classList.add(className);
-  newEl.textContent = textContent;
+  if (textContent) {
+    newEl.textContent = textContent;
+  }
+  return newEl;
 };
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement, createElement, isEscapeKey};
+export { getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement, createElement, isEscapeKey };
