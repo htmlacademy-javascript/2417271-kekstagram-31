@@ -13,6 +13,8 @@ const fullscreenCommentsTotalCountEl = fullscreenPostEl.querySelector('.social__
 const commentsLouderEl = fullscreenPostEl.querySelector('.social__comments-loader');
 const commentsContainerEl = fullscreenPostEl.querySelector('.social__comments');
 
+const commentsFragment = document.createDocumentFragment();
+
 const renderFullscreenComment = ({ avatar, message, name }) => {
   const newComment = createElement('li', 'social__comment');
   const newCommentAvatar = createElement('img', 'social__picture');
@@ -22,40 +24,27 @@ const renderFullscreenComment = ({ avatar, message, name }) => {
   newCommentAvatar.height = 35;
   const newCommentMessage = createElement('p', 'social__text', message);
   newComment.append(newCommentAvatar, newCommentMessage);
-  commentsContainerEl.append(newComment);
+  commentsFragment.append(newComment);
 };
-
-// const uploudeComments = (comments, evt) => {
-// const shownComments = commentsContainerEl.children.length;
-// for (let i = shownComments; i <= shownComments + 5; i++) {
-//   renderFullscreenComment(comments[i]);
-// }
-
-// const toLoudeButtonClick = (commentsArr) => {
-//   if (commentsLouderEl.matches(!'.hidden')) {
-//     commentsLouderEl.addEventListener('click', uploudeComments(commentsArr));
-//   } else {
-//     commentsLouderEl.removeEventListener('click', uploudeComments(commentsArr));
-//   }
-// };
 
 const renderFullscreenPost = (dataArr, evt) => {
   const indexClickedEl = Array.from(thumbnails).indexOf(evt.target.parentNode);
-  const { url, description, comments, likes } = dataArr[indexClickedEl - 2]; //-2 потому что перед элементами-миниатюрами в контейнере 2 элемента: заголовок секции и секция для загрузки новых фоток
+  const { url, description, comments, likes } = dataArr[indexClickedEl - 2]; //-2 т.к. перед элементами-миниатюрами в контейнере 2 элемента: заголовок секции и секция для загрузки новых фоток
   fullscreenImgEl.src = url;
   fullscreenLikesCountEl.textContent = likes;
   fullscreenDescriptionEl.textContent = description;
   commentsContainerEl.innerHTML = '';
+  comments.forEach((comment) => renderFullscreenComment(comment));
 
-  // тз: при открытии поста показаны 5 комментариев. В тз не указанно, первых/последних/т.п., поэтому первых
+  // тз: при открытии поста показаны 5 комментариев. Не указанно, первых/последних/т.п., поэтому первых
   if (comments.length <= 5) {
-    comments.forEach((comment) => renderFullscreenComment(comment));
+    commentsContainerEl.append(commentsFragment);
     commentsLouderEl.classList.add('hidden');
   } else {
     for (let i = 0; i < 5; i++) {
-      renderFullscreenComment(comments[i]);
-      commentsLouderEl.classList.remove('hidden');
+      commentsContainerEl.append(commentsFragment.children[0]);
     }
+    commentsLouderEl.classList.remove('hidden');
   }
 
   fullscreenCommentsShownCountEl.textContent = commentsContainerEl.children.length;
@@ -63,6 +52,7 @@ const renderFullscreenPost = (dataArr, evt) => {
 };
 
 const clearFullscreen = () => {
+  commentsContainerEl.append(commentsFragment); //я не придумала, как иначе очистить document fragment:(
   commentsContainerEl.innerHTML = '';
 };
 
@@ -70,6 +60,7 @@ const showFullscreenPost = () => {
   fullscreenPostEl.classList.remove('hidden');
   document.addEventListener('keydown', onEscKeydown);
   fullscreenPostEl.addEventListener('click', onBackdropClick);
+  commentsLouderEl.addEventListener('click', onCommentLoudButtonClick);
 };
 
 const closeFullscreenPost = () => {
@@ -77,7 +68,24 @@ const closeFullscreenPost = () => {
   clearFullscreen();
   document.removeEventListener('keydown', onEscKeydown);
   fullscreenPostEl.removeEventListener('click', onBackdropClick);
+  commentsLouderEl.removeEventListener('click', onCommentLoudButtonClick);
 };
+
+function onCommentLoudButtonClick (evt) {
+  if (evt.target.matches('.social__comments-loader')) {
+    if (commentsFragment.children.length >= 5) {
+      for (let i = 0; i < 5; i++) {
+        commentsContainerEl.append(commentsFragment.children[0]);
+      }
+    } else {
+      commentsContainerEl.append(commentsFragment);
+    }
+    fullscreenCommentsShownCountEl.textContent = commentsContainerEl.children.length;
+  }
+  if (commentsFragment.children.length === 0) {
+    commentsLouderEl.classList.add('hidden');
+  }
+}
 
 function onEscKeydown(evt) {
   if (isEscapeKey(evt)) {
