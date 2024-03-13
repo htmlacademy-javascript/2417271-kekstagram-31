@@ -25,6 +25,6 @@ const generatePost = (_, index) => ({
 
 const generateThread = () => Array.from({ length: SETTING_POSTS.amountPosts }, generatePost);
 
-generateThread();
+const currentThread = generateThread();
 
-export {generateThread};
+export {currentThread};
