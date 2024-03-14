@@ -22,4 +22,6 @@ const addThumbnails = (thumbnailsData) => {
   thumbnailsContainerEl.append(thumbnailsFragment);
 };
 
-export {addThumbnails};
+const currentThread = addThumbnails();
+
+export {currentThread};
