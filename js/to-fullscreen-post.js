@@ -1,4 +1,4 @@
-import { createElement, isEscapeKey } from './utils.js';
+import { createElement, isEscapeKey, showModal, closeModal } from './utils.js';
 import { currentThread } from './generate-thread.js'; // я не придумала, как реализовать сопоставление миниатюр/полноразмерок без импорта сюда данных
 
 const thumbnailsContainerEl = document.querySelector('.pictures');
@@ -57,14 +57,14 @@ const clearFullscreen = () => {
 };
 
 const showFullscreenPost = () => {
-  fullscreenPostEl.classList.remove('hidden');
+  showModal(fullscreenPostEl);
   document.addEventListener('keydown', onEscKeydown);
   fullscreenPostEl.addEventListener('click', onBackdropClick);
   commentsLouderEl.addEventListener('click', onCommentLoudButtonClick);
 };
 
 const closeFullscreenPost = () => {
-  fullscreenPostEl.classList.add('hidden');
+  closeModal(fullscreenPostEl);
   clearFullscreen();
   document.removeEventListener('keydown', onEscKeydown);
   fullscreenPostEl.removeEventListener('click', onBackdropClick);

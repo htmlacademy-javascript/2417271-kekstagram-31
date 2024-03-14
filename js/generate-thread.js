@@ -1,18 +1,26 @@
-import {getDataToGenerateThread} from './data.js';
-import {getRandomLimitInteger,
+import { getDataToGenerateThread } from './data.js';
+import {
+  getRandomLimitInteger,
   createUniqueIdGenerator,
-  getRandomArrayElement} from './utils.js';
+  getRandomArrayElement
+} from './utils.js';
 
 // основные функции
 const { DESCRIPTIONS, COMMENT_MESSAGES, NAMES, SETTING_POSTS, SETTING_COMMENT } = getDataToGenerateThread();
 const generateCommentId = createUniqueIdGenerator();
 
-const generateComment = () => ({
-  id: generateCommentId(),
-  avatar: `img/avatar-${getRandomLimitInteger(SETTING_COMMENT.avatarMinLimit, SETTING_COMMENT.avatarMaxLimit)}.svg`,
-  message: getRandomArrayElement(COMMENT_MESSAGES),
-  name: getRandomArrayElement(NAMES),
-});
+const generateComment = () => {
+  const messageText = Array.from({ length: getRandomLimitInteger(SETTING_COMMENT.messageMinLimit, SETTING_COMMENT.messageMaxLimit) }).map((el) => {
+    el = getRandomArrayElement(COMMENT_MESSAGES);
+    return el;
+  });
+  return {
+    id: generateCommentId(),
+    avatar: `img/avatar-${getRandomLimitInteger(SETTING_COMMENT.avatarMinLimit, SETTING_COMMENT.avatarMaxLimit)}.svg`,
+    message: messageText.join(' '),
+    name: getRandomArrayElement(NAMES)
+  };
+};
 
 
 const generatePost = (_, index) => ({
@@ -27,4 +35,4 @@ const generateThread = () => Array.from({ length: SETTING_POSTS.amountPosts }, g
 
 const currentThread = generateThread();
 
-export {currentThread};
+export { currentThread };
