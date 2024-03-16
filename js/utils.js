@@ -1,4 +1,5 @@
-// вспомогательные функции
+const body = document.querySelector('body');
+
 const getRandomLimitInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -44,4 +45,14 @@ const createElement = (tagName, className, textContent) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement, createElement, isEscapeKey};
+const showModal = (modalElement) => {
+  modalElement.classList.remove('hidden');
+  body.classList.add('modal-open');
+};
+
+const closeModal = (modalElement) => {
+  modalElement.classList.add('hidden');
+  body.classList.remove('modal-open');
+};
+
+export {getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement, createElement, isEscapeKey, showModal, closeModal};
