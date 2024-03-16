@@ -1,49 +1,52 @@
-// 1. Атрибуты для <form> - см. тз
-// 2. Загрузка изображения, форма редактирования (пока без подстановки выбранного изображения в форму) - см. тз
-// 3. Закрытие формы - см. тз (ВАЖНО: сброс форм после загрузки)
-// 4. Валидация формы добавления изображения: хэштэги, комментарий - см. тз
-// 4.1. Валидация при отправке - обязательна, при заполнении - вариативно
-import { isEscapeKey, showModal, closeModal } from './utils.js';
+import {checkStringLength} from './utils.js';
 
 const uploadImgFormEl = document.querySelector('#upload-select-image');
-const uploadImgButtonEl = uploadImgFormEl.querySelector('#upload-file');
 
 const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
-// const editorPreview = editImgEl.querySelector('.img-upload__preview').querySelector('img');
-// const hashtagsFieldEl = editImgEl.querySelector('#hashtags');
-// const describtionFieldEl = editImgEl.querySelector('#description');
+const hashtagsFieldEl = editImgEl.querySelector('#hashtags');
+const describtionFieldEl = editImgEl.querySelector('#description');
 
-// const editFormSubmitEl = editImgEl.querySelector('#upload-submit');
-const closeEditImgButtonEl = editImgEl.querySelector('.img-upload__cancel');
+const pristine = new Pristine(uploadImgFormEl, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'div',
+  errorTextClass: 'img-upload__field-wrapper--error'
+});
 
-// const pristine = new Pristine(uploadImgFormEl);
-
-const showFullscreenEditor = () => {
-  // console.log(uploadImgButtonEl.value); - как-то подставим это фото в editorPreview
-  document.addEventListener('keydown', onEscKeydown);
-  closeEditImgButtonEl.addEventListener('click', onCloseButtonClick);
+const hashtagValidate = (hashtag) => {
+  const hashtagPattern = /^#[a-zа-яё0-9]{1,19}$/i;
+  // console.log('паттерн');
+  return hashtagPattern.test(hashtag);
 };
 
-const closeFullscreenEditor = () => {
-  uploadImgFormEl.reset();
-  closeModal(editImgEl);
-  document.removeEventListener('keydown', onEscKeydown);
-  closeEditImgButtonEl.removeEventListener('click', onCloseButtonClick);
-};
-
-function onEscKeydown(evt) {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeFullscreenEditor();
+const hashtagsValidate = (value) => {
+  if (value === '') {
+    return true;
   }
-}
+  const hashtags = value.split(' ');
+  if (hashtags.length > 5) {
+    return false;
+  }
+  if ((new Set(hashtags)).size !== hashtags.length) {
+    return false;
+  }
+  return hashtags.forEach((hashtag) => hashtagValidate(hashtag));
+};
 
-function onCloseButtonClick () {
-  closeFullscreenEditor();
-}
+// const describeHashtagError = () => {
+// // введён невалидный хэштег;
+// // превышено количество хэштегов;
+// // хэштеги повторяются;
+// };
 
-uploadImgButtonEl.addEventListener('change', (evt) => {
+const describtionValidate = (value) => checkStringLength(value, 140);
+
+pristine.addValidator(hashtagsFieldEl, hashtagsValidate, 'Что-то пошло не так');
+pristine.addValidator(describtionFieldEl, describtionValidate, 'Длина комментария больше 140 символов'); // ??? валидировать только через JS или +HTML?
+
+uploadImgFormEl.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  showModal(editImgEl);
-  showFullscreenEditor();
+  if (pristine.validate()) {
+    uploadImgFormEl.submit();
+  }
 });
