@@ -25,11 +25,13 @@ const isValidHashtags = (value) => {
   const hashtagPattern = /^#[a-zа-яё0-9]{1,19}$/gi;
   const hashtags = value.split(' ');
   // работает некорректно: при введении второго хэштэга продолжает считать его ошибочным, даже когда после # введены валидные символы
-  const invalidEl = hashtags.find((hashtag) => !hashtagPattern.test(hashtag));
-  if (!invalidEl || value === '') {
-    return true;
-  }
-  return false;
+  // const invalidEl = hashtags.find((hashtag) => !hashtagPattern.test(hashtag));
+  // if (!invalidEl || value === '') {
+  //   return true;
+  // }
+  // return false;
+  // та же проблема
+  // return hashtags.every((hashtag) => hashtagPattern.test(hashtag)) || value === '';
 };
 
 pristine.addValidator(hashtagsFieldEl, isInLimitHashtags, 'Превышено количество хэштегов');
