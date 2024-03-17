@@ -39,4 +39,5 @@ function onuploudButtionClick(evt) {
   showFullscreenEditor();
 }
 
-export {uploadImgButtonEl, onuploudButtionClick};
+uploadImgButtonEl.addEventListener('change', onuploudButtionClick);
+

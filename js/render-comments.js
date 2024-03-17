@@ -1,11 +1,16 @@
 import { createElement } from './utils.js';
+import { currentThread } from './generate-thread.js';
+
+const LOAD_STEP = 5;
 
 const fullscreenPostEl = document.querySelector('.big-picture');
-const commentsLouderEl = fullscreenPostEl.querySelector('.social__comments-loader');
+const commentsLoaderEl = fullscreenPostEl.querySelector('.social__comments-loader');
 const commentsContainerEl = fullscreenPostEl.querySelector('.social__comments');
+const fullscreenCommentsShownCountEl = fullscreenPostEl.querySelector('.social__comment-shown-count');
+const fullscreenCommentsTotalCountEl = fullscreenPostEl.querySelector('.social__comment-total-count');
+
 
 const commentsFragment = document.createDocumentFragment();
-const LOUD_STEP = 5;
 
 const renderComment = ({ avatar, message, name }) => {
   const newComment = createElement('li', 'social__comment');
@@ -20,41 +25,42 @@ const renderComment = ({ avatar, message, name }) => {
 };
 
 const renderCommentsPack = (commentsArr) => {
-  if (commentsArr.length <= LOUD_STEP) {
+  if (commentsArr.length <= LOAD_STEP) {
     commentsArr.forEach((comment) => renderComment(comment));
-    commentsContainerEl.append(commentsFragment);
-    commentsLouderEl.classList.add('hidden');
+    commentsLoaderEl.classList.add('hidden');
+    fullscreenCommentsShownCountEl.textContent = commentsArr.length;
   } else {
-    const lastComment = commentsContainerEl.children.length;
-    if (commentsArr.length < lastComment + LOUD_STEP) {
-      const renderPack = commentsArr.slice(lastComment);
-      renderPack.forEach((comment) => renderComment(comment));
-      commentsContainerEl.append(commentsFragment);
-      commentsLouderEl.classList.add('hidden');
+    const lastComment = commentsContainerEl.querySelectorAll('.social__comment').length;
+    let renderPack;
+    if (commentsArr.length <= lastComment + LOAD_STEP) {
+      renderPack = commentsArr.slice(lastComment);
+      commentsLoaderEl.classList.add('hidden');
     } else {
-      const renderPack = commentsArr.slice(lastComment, lastComment + LOUD_STEP);
-      renderPack.forEach((comment) => renderComment(comment));
-      commentsContainerEl.append(commentsFragment);
-      commentsLouderEl.classList.remove('hidden');
+      renderPack = commentsArr.slice(lastComment, lastComment + LOAD_STEP);
+      commentsLoaderEl.classList.remove('hidden');
     }
+    renderPack.forEach((comment) => renderComment(comment));
+    fullscreenCommentsShownCountEl.textContent = lastComment + renderPack.length;
   }
+  commentsContainerEl.append(commentsFragment);
+  fullscreenCommentsTotalCountEl.textContent = commentsArr.length;
 };
 
 const renderComments = (currentCommentsData) => {
   renderCommentsPack(currentCommentsData);
-  commentsLouderEl.addEventListener('click', onCommentLoudButtonClick);
+  commentsLoaderEl.addEventListener('click', onCommentLoudButtonClick);
 };
 
 const clearComments = () => {
   commentsContainerEl.innerHTML = '';
-  commentsLouderEl.removeEventListener('click', onCommentLoudButtonClick);
+  commentsLoaderEl.removeEventListener('click', onCommentLoudButtonClick);
 };
 
 
-function onCommentLoudButtonClick (evt) {
-  if (evt.target.matches('.social__comments-loader')) {
-    // renderCommentsPack(????) не могу придумать, как привязать контекст текущего поста
-  }
+function onCommentLoudButtonClick(evt) {
+  const currentCommentsLoader = evt.target;
+  const currentPostData = currentThread.find((element) => element.id === Number(currentCommentsLoader.dataset.postId));
+  renderCommentsPack(currentPostData.comments);
 }
 
 export { renderCommentsPack, renderComments, clearComments };

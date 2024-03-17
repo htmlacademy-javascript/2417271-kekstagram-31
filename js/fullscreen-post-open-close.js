@@ -1,14 +1,14 @@
 import { isEscapeKey, showModal, closeModal } from './utils.js';
-import {renderFullscreenPost} from './render-fullscreen-post.js';
-import {clearComments} from './render-comments.js';
+import { currentThread } from './generate-thread.js';
+import { renderFullscreenPost } from './render-fullscreen-post.js';
+import { clearComments } from './render-comments.js';
 
 const thumbnailsContainerEl = document.querySelector('.pictures');
 const fullscreenPostEl = document.querySelector('.big-picture');
 const closeFullscreenButtonEl = document.querySelector('.big-picture__cancel');
 
-const showFullscreenPost = (currentPostData) => {
+const showFullscreenPost = () => {
   showModal(fullscreenPostEl);
-  renderFullscreenPost(currentPostData);
   document.addEventListener('keydown', onEscKeydown);
   closeFullscreenButtonEl.addEventListener('click', onCloseButtonClick);
   fullscreenPostEl.addEventListener('click', onBackdropClick);
@@ -39,12 +39,14 @@ function onBackdropClick(evt) {
   }
 }
 
-const onThumbnailClick = (dataArr, evt) => {
-  if (evt.target.closest('.picture')) {
+const onThumbnailClick = (evt) => {
+  const clickedEl = evt.target.closest('.picture');
+  if (clickedEl) {
     evt.preventDefault();
-    const clickedEl = dataArr.find((element) => element.id === Number(evt.target.parentNode.dataset.photoId));
-    showFullscreenPost(clickedEl);
+    const clickedElData = currentThread.find((element) => element.id === Number(clickedEl.dataset.photoId));
+    renderFullscreenPost(clickedElData);
+    showFullscreenPost();
   }
 };
 
-export {thumbnailsContainerEl, onThumbnailClick};
+thumbnailsContainerEl.addEventListener('click', onThumbnailClick);
