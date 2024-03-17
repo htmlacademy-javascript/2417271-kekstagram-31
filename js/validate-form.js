@@ -1,5 +1,3 @@
-import {checkStringLength} from './utils.js';
-
 const uploadImgFormEl = document.querySelector('#upload-select-image');
 
 const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
@@ -13,36 +11,31 @@ const pristine = new Pristine(uploadImgFormEl, {
   errorTextClass: 'img-upload__field-wrapper--error'
 });
 
-const hashtagValidate = (hashtag) => {
-  const hashtagPattern = /^#[a-zа-яё0-9]{1,19}$/i;
-  // console.log('паттерн');
-  return hashtagPattern.test(hashtag);
+const isInLimitHashtags = (value) => {
+  const hashtags = value.split(' ');
+  return hashtags.length <= 5;
 };
 
-const hashtagsValidate = (value) => {
-  if (value === '') {
+const isUndoubleHashtags = (value) => {
+  const hashtags = value.toLowerCase().split(' ');
+  return (new Set(hashtags)).size === hashtags.length;
+};
+
+const isValidHashtags = (value) => {
+  const hashtagPattern = /^#[a-zа-яё0-9]{1,19}$/gi;
+  const hashtags = value.split(' ');
+  // работает некорректно: при введении второго хэштэга продолжает считать его ошибочным, даже когда после # введены валидные символы
+  const invalidEl = hashtags.find((hashtag) => !hashtagPattern.test(hashtag));
+  if (!invalidEl || value === '') {
     return true;
   }
-  const hashtags = value.split(' ');
-  if (hashtags.length > 5) {
-    return false;
-  }
-  if ((new Set(hashtags)).size !== hashtags.length) {
-    return false;
-  }
-  return hashtags.forEach((hashtag) => hashtagValidate(hashtag));
+  return false;
 };
 
-// const describeHashtagError = () => {
-// // введён невалидный хэштег;
-// // превышено количество хэштегов;
-// // хэштеги повторяются;
-// };
-
-const describtionValidate = (value) => checkStringLength(value, 140);
-
-pristine.addValidator(hashtagsFieldEl, hashtagsValidate, 'Что-то пошло не так');
-pristine.addValidator(describtionFieldEl, describtionValidate, 'Длина комментария больше 140 символов'); // ??? валидировать только через JS или +HTML?
+pristine.addValidator(hashtagsFieldEl, isInLimitHashtags, 'Превышено количество хэштегов');
+pristine.addValidator(hashtagsFieldEl, isUndoubleHashtags, 'Хэштеги повторяются');
+pristine.addValidator(hashtagsFieldEl, isValidHashtags, 'Введён невалидный хэштег');
+pristine.addValidator(describtionFieldEl);
 
 uploadImgFormEl.addEventListener('submit', (evt) => {
   evt.preventDefault();

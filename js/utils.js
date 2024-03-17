@@ -55,6 +55,4 @@ const closeModal = (modalElement) => {
   body.classList.remove('modal-open');
 };
 
-const checkStringLength = (string = '', lenght = 1) => string.length <= lenght;
-
-export {getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement, createElement, isEscapeKey, showModal, closeModal, checkStringLength};
+export { getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement, createElement, isEscapeKey, showModal, closeModal };
