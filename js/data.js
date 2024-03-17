@@ -44,7 +44,9 @@ const getDataToGenerateThread = () => {
     commentsMinLimit: 0,
     commentsMaxLimit: 30,
     avatarMinLimit: 1,
-    avatarMaxLimit: 6
+    avatarMaxLimit: 6,
+    messageMinLimit: 1,
+    messageMaxLimit: 2
   };
 
   return { DESCRIPTIONS, COMMENT_MESSAGES, NAMES, SETTING_POSTS, SETTING_COMMENT };
