@@ -7,10 +7,19 @@ import {getRandomLimitInteger,
 const { DESCRIPTIONS, COMMENT_MESSAGES, NAMES, SETTING_POSTS, SETTING_COMMENT } = getDataToGenerateThread();
 const generateCommentId = createUniqueIdGenerator();
 
+const generateCommentMessage = (minAmountLimit, maxAmountLimit, messageArr) => {
+  const messageLenght = getRandomLimitInteger(minAmountLimit, maxAmountLimit);
+  const uniqueMessages = new Set();
+  while (uniqueMessages.size < messageLenght) {
+    uniqueMessages.add(getRandomArrayElement(messageArr));
+  }
+  return Array.from(uniqueMessages).join(' ');
+};
+
 const generateComment = () => ({
   id: generateCommentId(),
   avatar: `img/avatar-${getRandomLimitInteger(SETTING_COMMENT.avatarMinLimit, SETTING_COMMENT.avatarMaxLimit)}.svg`,
-  message: getRandomArrayElement(COMMENT_MESSAGES),
+  message: generateCommentMessage(SETTING_COMMENT.messageMinAmountLimit, SETTING_COMMENT.messageMaxAmountLimit, COMMENT_MESSAGES),
   name: getRandomArrayElement(NAMES),
 });
 
