@@ -4,12 +4,55 @@ const SCALE_STEP = 25;
 const SCALE_MIN_LIMIT = 25;
 const SCALE_MAX_LIMIT = 100;
 const SCALE_DEFAULT = 100;
+const EffectsSetting = {
+  chrome: {
+    filter: 'grayscale',
+    minLimit: 0,
+    maxLimit: 1,
+    step: 0.1,
+    start: 1,
+    unit: ''
+  },
+  sepia: {
+    filter: 'sepia',
+    minLimit: 0,
+    maxLimit: 1,
+    step: 0.1,
+    start: 1,
+    unit: ''
+  },
+  marvin: {
+    filter: 'invert',
+    minLimit: 0,
+    maxLimit: 100,
+    step: 1,
+    start: 100,
+    unit: '%'
+  },
+  phobos: {
+    filter: 'blur',
+    minLimit: 0,
+    maxLimit: 3,
+    step: 0.1,
+    start: 3,
+    unit: 'px'
+  },
+  heat: {
+    filter: 'brightness',
+    minLimit: 1,
+    maxLimit: 3,
+    step: 0.1,
+    start: 3,
+    unit: ''
+  },
+};
 
 const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
 const editorPreview = editImgEl.querySelector('.img-upload__preview').querySelector('img');
 const scaleInpEl = editImgEl.querySelector('.scale__control--value');
-const effectInpEl = editImgEl.querySelector('#effect-level');
-const effectSlider = editImgEl.querySelector('.img-upload__effect-level');
+const sliderContainenrEl = editImgEl.querySelector('.img-upload__effect-level');
+const effectInpEl = sliderContainenrEl.querySelector('#effect-level');
+const effectSlider = sliderContainenrEl.querySelector('.effect-level__slider');
 
 // редактор масштаба изображения
 let currentScaleValue = parseInt(scaleInpEl.value, 10);
@@ -48,25 +91,57 @@ const onScaleBiggererClick = () => {
 };
 
 // редактор эффектов
-const resetEffect = () => {};
+noUiSlider.create(effectSlider, {
+  range: {
+    min: 0,
+    max: 100,
+  },
+  start: 100,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    }
+  },
+});
 
-const changeEffect = () => {};
+const resetEffect = () => {
+  editorPreview.style.removeProperty('filter');
+  sliderContainenrEl.classList.add('hidden');
+  // effectSlider.noUiSlider.off('update', getStyleValue);
+};
 
-const onEffectChange = (evt) => {
-  const checkedEl = evt.target.closest('.effects__lable');
-  if (checkedEl) {
-    console.log(checkedEl);
+const changeEffect = (effectValue) => {
+  // effectInpEl.value = effectSlider.noUiSlider.get();
+  if (effectValue === 'none') {
+    resetEffect();
+  } else {
+    sliderContainenrEl.classList.remove('hidden');
+    const { filter, minLimit, maxLimit, step, start, unit } = EffectsSetting[effectValue];
+    effectSlider.noUiSlider.updateOptions({
+      range: {
+        min: minLimit,
+        max: maxLimit,
+      },
+      start: start,
+      step: step,
+    });
+    editorPreview.style.filter = `${filter}(${effectInpEl.value}${unit})`;
   }
 };
 
-// const onThumbnailClick = (evt) => {
-//   const clickedEl = evt.target.closest('.picture');
-//   if (clickedEl) {
-//     evt.preventDefault();
-//     const clickedElData = currentThread.find((element) => element.id === Number(clickedEl.dataset.photoId));
-//     renderFullscreenPost(clickedElData);
-//     showFullscreenPost();
-//   }
-// };
+const onEffectChange = (evt) => {
+  if (evt.target.name === 'effect') {
+    changeEffect(evt.target.value);
+    // effectSlider.noUiSlider.on('update', getStyleValue);
+  }
+};
 
 export { editImgEl, resetScale, onScaleSmallerClick, onScaleBiggererClick, resetEffect, onEffectChange };

@@ -34,11 +34,11 @@ pristine.addValidator(hashtagsFieldEl, isInLimitHashtags, 'Превышено к
 pristine.addValidator(hashtagsFieldEl, isUndoubleHashtags, 'Хэштеги повторяются');
 pristine.addValidator(hashtagsFieldEl, isValidHashtags, 'Введён невалидный хэштег');
 
-const onEditFormSaubmit = (evt) => {
+const onEditFormSubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
     uploadImgFormEl.submit();
   }
 };
 
-export {uploadImgFormEl, onEditFormSaubmit};
+export {uploadImgFormEl, onEditFormSubmit};

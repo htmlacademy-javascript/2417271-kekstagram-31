@@ -1,21 +1,22 @@
 import { isEscapeKey, showModal, closeModal } from './utils.js';
-import { uploadImgFormEl, onEditFormSaubmit } from './validate-form.js';
+import { uploadImgFormEl, onEditFormSubmit } from './validate-form.js';
 import { editImgEl, resetScale, onScaleSmallerClick, onScaleBiggererClick, resetEffect, onEffectChange } from './edit-upload-img.js';
 
 const uploadImgButtonEl = uploadImgFormEl.querySelector('#upload-file');
 const closeEditImgButtonEl = editImgEl.querySelector('.img-upload__cancel');
 const scaleSmallerButtonEl = editImgEl.querySelector('.scale__control--smaller');
 const scaleBiggerButtonEl = editImgEl.querySelector('.scale__control--bigger');
-const effectsListEl = editImgEl.querySelector('.effect-level__slider');
+// const effectsListEl = editImgEl.querySelector('.effects__list');
 
 const showFullscreenEditor = () => {
   // console.log(uploadImgButtonEl.value); - как-то подставим это фото в editorPreview
+  resetEffect();
   document.addEventListener('keydown', onEscKeydown);
   closeEditImgButtonEl.addEventListener('click', onCloseButtonClick);
   scaleSmallerButtonEl.addEventListener('click', onScaleSmallerClick);
   scaleBiggerButtonEl.addEventListener('click', onScaleBiggererClick);
-  effectsListEl.addEventListener('click', onEffectChange);
-  uploadImgFormEl.addEventListener('submit', onEditFormSaubmit);
+  uploadImgFormEl.addEventListener('change', onEffectChange);
+  uploadImgFormEl.addEventListener('submit', onEditFormSubmit);
 };
 
 const closeFullscreenEditor = () => {
@@ -27,8 +28,8 @@ const closeFullscreenEditor = () => {
   closeEditImgButtonEl.removeEventListener('click', onCloseButtonClick);
   scaleSmallerButtonEl.removeEventListener('click', onScaleSmallerClick);
   scaleBiggerButtonEl.removeEventListener('click', onScaleBiggererClick);
-  effectsListEl.removeEventListener('click', onEffectChange);
-  uploadImgFormEl.removeEventListener('submit', onEditFormSaubmit);
+  uploadImgFormEl.removeEventListener('change', onEffectChange);
+  uploadImgFormEl.removeEventListener('submit', onEditFormSubmit);
 };
 
 function onEscKeydown(evt) {
