@@ -1,6 +1,6 @@
-const HASHTAG_LIMIT = 5;
+import { uploadImgFormEl } from './edit-form-open-close.js';
 
-const uploadImgFormEl = document.querySelector('#upload-select-image');
+const HASHTAG_LIMIT = 5;
 
 const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
 const hashtagsFieldEl = editImgEl.querySelector('#hashtags');
