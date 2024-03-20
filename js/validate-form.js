@@ -1,7 +1,6 @@
-import { uploadImgFormEl } from './edit-form-open-close.js';
-
 const HASHTAG_LIMIT = 5;
 
+const uploadImgFormEl = document.querySelector('#upload-select-image');
 const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
 const hashtagsFieldEl = editImgEl.querySelector('#hashtags');
 
@@ -35,9 +34,11 @@ pristine.addValidator(hashtagsFieldEl, isInLimitHashtags, 'Превышено к
 pristine.addValidator(hashtagsFieldEl, isUndoubleHashtags, 'Хэштеги повторяются');
 pristine.addValidator(hashtagsFieldEl, isValidHashtags, 'Введён невалидный хэштег');
 
-uploadImgFormEl.addEventListener('submit', (evt) => {
+const onEditFormSaubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
     uploadImgFormEl.submit();
   }
-});
+};
+
+export {uploadImgFormEl, onEditFormSaubmit};
