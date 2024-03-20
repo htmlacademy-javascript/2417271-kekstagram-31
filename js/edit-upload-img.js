@@ -115,11 +115,10 @@ noUiSlider.create(effectSlider, {
 const resetEffect = () => {
   editorPreview.style.removeProperty('filter');
   sliderContainenrEl.classList.add('hidden');
-  // effectSlider.noUiSlider.off('update', getStyleValue);
+  effectInpEl.value = 0;
 };
 
 const changeEffect = (effectValue) => {
-  // effectInpEl.value = effectSlider.noUiSlider.get();
   if (effectValue === 'none') {
     resetEffect();
   } else {
@@ -133,14 +132,16 @@ const changeEffect = (effectValue) => {
       start: start,
       step: step,
     });
-    editorPreview.style.filter = `${filter}(${effectInpEl.value}${unit})`;
+    effectSlider.noUiSlider.on('update', () => {
+      effectInpEl.value = effectSlider.noUiSlider.get();
+      editorPreview.style.filter = `${filter}(${effectInpEl.value}${unit})`;
+    });
   }
 };
 
 const onEffectChange = (evt) => {
   if (evt.target.name === 'effect') {
     changeEffect(evt.target.value);
-    // effectSlider.noUiSlider.on('update', getStyleValue);
   }
 };
 
