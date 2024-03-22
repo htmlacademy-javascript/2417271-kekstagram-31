@@ -112,10 +112,20 @@ noUiSlider.create(effectSlider, {
   },
 });
 
+const getEffectValue = () => {
+  const effectType = effectSlider.dataset.effect;
+  if (effectType !== 'none') {
+    const { filter, unit } = EffectsSetting[effectType];
+    effectInpEl.value = effectSlider.noUiSlider.get();
+    editorPreview.style.filter = `${filter}(${effectInpEl.value}${unit})`;
+  }
+};
+
 const resetEffect = () => {
   editorPreview.style.removeProperty('filter');
   sliderContainenrEl.classList.add('hidden');
-  effectInpEl.value = 0;
+  effectInpEl.value = '';
+  effectSlider.noUiSlider.off('update', getEffectValue);
 };
 
 const changeEffect = (effectValue) => {
@@ -123,7 +133,7 @@ const changeEffect = (effectValue) => {
     resetEffect();
   } else {
     sliderContainenrEl.classList.remove('hidden');
-    const { filter, minLimit, maxLimit, step, start, unit } = EffectsSetting[effectValue];
+    const { minLimit, maxLimit, step, start } = EffectsSetting[effectValue];
     effectSlider.noUiSlider.updateOptions({
       range: {
         min: minLimit,
@@ -132,16 +142,15 @@ const changeEffect = (effectValue) => {
       start: start,
       step: step,
     });
-    effectSlider.noUiSlider.on('update', () => {
-      effectInpEl.value = effectSlider.noUiSlider.get();
-      editorPreview.style.filter = `${filter}(${effectInpEl.value}${unit})`;
-    });
   }
 };
 
 const onEffectChange = (evt) => {
   if (evt.target.name === 'effect') {
-    changeEffect(evt.target.value);
+    const effectType = evt.target.value;
+    effectSlider.dataset.effect = effectType;
+    changeEffect(effectType);
+    effectSlider.noUiSlider.on('update', getEffectValue);
   }
 };
 
