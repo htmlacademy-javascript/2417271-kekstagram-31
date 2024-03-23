@@ -114,11 +114,9 @@ noUiSlider.create(effectSlider, {
 
 const getEffectValue = () => {
   const effectType = effectSlider.dataset.effect;
-  if (effectType !== 'none') {
-    const { filter, unit } = EffectsSetting[effectType];
-    effectInpEl.value = effectSlider.noUiSlider.get();
-    editorPreview.style.filter = `${filter}(${effectInpEl.value}${unit})`;
-  }
+  const { filter, unit } = EffectsSetting[effectType];
+  effectInpEl.value = effectSlider.noUiSlider.get();
+  editorPreview.style.filter = `${filter}(${effectInpEl.value}${unit})`;
 };
 
 const resetEffect = () => {
@@ -129,28 +127,27 @@ const resetEffect = () => {
 };
 
 const changeEffect = (effectValue) => {
-  if (effectValue === 'none') {
-    resetEffect();
-  } else {
-    sliderContainenrEl.classList.remove('hidden');
-    const { minLimit, maxLimit, step, start } = EffectsSetting[effectValue];
-    effectSlider.noUiSlider.updateOptions({
-      range: {
-        min: minLimit,
-        max: maxLimit,
-      },
-      start: start,
-      step: step,
-    });
-  }
+  sliderContainenrEl.classList.remove('hidden');
+  const { minLimit, maxLimit, step, start } = EffectsSetting[effectValue];
+  effectSlider.noUiSlider.updateOptions({
+    range: {
+      min: minLimit,
+      max: maxLimit,
+    },
+    start: start,
+    step: step,
+  });
 };
 
 const onEffectChange = (evt) => {
   if (evt.target.name === 'effect') {
+    resetEffect();
     const effectType = evt.target.value;
-    effectSlider.dataset.effect = effectType;
-    changeEffect(effectType);
-    effectSlider.noUiSlider.on('update', getEffectValue);
+    if (effectType !== 'none') {
+      effectSlider.dataset.effect = effectType;
+      changeEffect(effectType);
+      effectSlider.noUiSlider.on('update', getEffectValue);
+    }
   }
 };
 
