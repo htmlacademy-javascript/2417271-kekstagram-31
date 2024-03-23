@@ -55,4 +55,4 @@ const closeModal = (modalElement) => {
   body.classList.remove('modal-open');
 };
 
-export {getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement, createElement, isEscapeKey, showModal, closeModal};
+export { getRandomLimitInteger, createUniqueIdGenerator, getRandomArrayElement, createElement, isEscapeKey, showModal, closeModal };
