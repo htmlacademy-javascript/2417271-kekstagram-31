@@ -1,4 +1,5 @@
 import { createElement } from './utils.js';
+
 // import { currentThread } from './generate-thread.js'; // закомментировать для варианта предварительной генерации всех комментариев
 
 const LOAD_STEP = 5;
@@ -11,6 +12,7 @@ const fullscreenCommentsTotalCountEl = fullscreenPostEl.querySelector('.social__
 
 
 const commentsFragment = document.createDocumentFragment();
+
 
 const renderComment = ({ avatar, message, name }) => {
   const newComment = createElement('li', 'social__comment');

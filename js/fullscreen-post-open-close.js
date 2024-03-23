@@ -23,6 +23,7 @@ const closeFullscreenPost = () => {
   document.removeEventListener('keydown', onEscKeydown);
   closeFullscreenButtonEl.removeEventListener('click', onCloseButtonClick);
   fullscreenPostEl.removeEventListener('click', onBackdropClick);
+
   commentsLoaderEl.addEventListener('click', onCommentLoudButtonClick); //для варианта предварительной генерации всех комментариев
 };
 
