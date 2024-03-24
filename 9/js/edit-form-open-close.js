@@ -1,21 +1,35 @@
 import { isEscapeKey, showModal, closeModal } from './utils.js';
+import { uploadImgFormEl, onEditFormSubmit } from './validate-form.js';
+import { editImgEl, resetScale, onScaleSmallerClick, onScaleBiggererClick, resetEffect, onEffectChange } from './edit-upload-img.js';
 
-const uploadImgFormEl = document.querySelector('#upload-select-image');
 const uploadImgButtonEl = uploadImgFormEl.querySelector('#upload-file');
-const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
 const closeEditImgButtonEl = editImgEl.querySelector('.img-upload__cancel');
+const scaleSmallerButtonEl = editImgEl.querySelector('.scale__control--smaller');
+const scaleBiggerButtonEl = editImgEl.querySelector('.scale__control--bigger');
+// const effectsListEl = editImgEl.querySelector('.effects__list');
 
 const showFullscreenEditor = () => {
   // console.log(uploadImgButtonEl.value); - как-то подставим это фото в editorPreview
+  resetEffect();
   document.addEventListener('keydown', onEscKeydown);
   closeEditImgButtonEl.addEventListener('click', onCloseButtonClick);
+  scaleSmallerButtonEl.addEventListener('click', onScaleSmallerClick);
+  scaleBiggerButtonEl.addEventListener('click', onScaleBiggererClick);
+  uploadImgFormEl.addEventListener('change', onEffectChange);
+  uploadImgFormEl.addEventListener('submit', onEditFormSubmit);
 };
 
 const closeFullscreenEditor = () => {
   uploadImgFormEl.reset();
   closeModal(editImgEl);
+  resetScale();
+  resetEffect();
   document.removeEventListener('keydown', onEscKeydown);
   closeEditImgButtonEl.removeEventListener('click', onCloseButtonClick);
+  scaleSmallerButtonEl.removeEventListener('click', onScaleSmallerClick);
+  scaleBiggerButtonEl.removeEventListener('click', onScaleBiggererClick);
+  uploadImgFormEl.removeEventListener('change', onEffectChange);
+  uploadImgFormEl.removeEventListener('submit', onEditFormSubmit);
 };
 
 function onEscKeydown(evt) {
@@ -39,4 +53,4 @@ function onuploudButtionClick(evt) {
   showFullscreenEditor();
 }
 
-export {uploadImgButtonEl, onuploudButtionClick};
+uploadImgButtonEl.addEventListener('change', onuploudButtionClick);

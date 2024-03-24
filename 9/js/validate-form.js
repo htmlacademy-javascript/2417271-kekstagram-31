@@ -1,10 +1,8 @@
-import {checkStringLength} from './utils.js';
+const HASHTAG_LIMIT = 5;
 
 const uploadImgFormEl = document.querySelector('#upload-select-image');
-
 const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
 const hashtagsFieldEl = editImgEl.querySelector('#hashtags');
-const describtionFieldEl = editImgEl.querySelector('#description');
 
 const pristine = new Pristine(uploadImgFormEl, {
   classTo: 'img-upload__field-wrapper',
@@ -13,40 +11,34 @@ const pristine = new Pristine(uploadImgFormEl, {
   errorTextClass: 'img-upload__field-wrapper--error'
 });
 
-const hashtagValidate = (hashtag) => {
-  const hashtagPattern = /^#[a-zа-яё0-9]{1,19}$/i;
-  // console.log('паттерн');
-  return hashtagPattern.test(hashtag);
+const isInLimitHashtags = (value) => {
+  const hashtags = value.split(' ');
+  return hashtags.length <= HASHTAG_LIMIT;
 };
 
-const hashtagsValidate = (value) => {
+const isUndoubleHashtags = (value) => {
+  const hashtags = value.toLowerCase().split(' ');
+  return (new Set(hashtags)).size === hashtags.length;
+};
+
+const isValidHashtags = (value) => {
   if (value === '') {
     return true;
   }
-  const hashtags = value.split(' ');
-  if (hashtags.length > 5) {
-    return false;
-  }
-  if ((new Set(hashtags)).size !== hashtags.length) {
-    return false;
-  }
-  return hashtags.forEach((hashtag) => hashtagValidate(hashtag));
+  const hashtagPattern = /^#[a-zа-яё0-9]{1,19}$/i;
+  const hashtags = value.trim().split(' ');
+  return hashtags.every((hashtag) => hashtagPattern.test(hashtag));
 };
 
-// const describeHashtagError = () => {
-// // введён невалидный хэштег;
-// // превышено количество хэштегов;
-// // хэштеги повторяются;
-// };
+pristine.addValidator(hashtagsFieldEl, isInLimitHashtags, 'Превышено количество хэштегов');
+pristine.addValidator(hashtagsFieldEl, isUndoubleHashtags, 'Хэштеги повторяются');
+pristine.addValidator(hashtagsFieldEl, isValidHashtags, 'Введён невалидный хэштег');
 
-const describtionValidate = (value) => checkStringLength(value, 140);
-
-pristine.addValidator(hashtagsFieldEl, hashtagsValidate, 'Что-то пошло не так');
-pristine.addValidator(describtionFieldEl, describtionValidate, 'Длина комментария больше 140 символов'); // ??? валидировать только через JS или +HTML?
-
-uploadImgFormEl.addEventListener('submit', (evt) => {
+const onEditFormSubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
     uploadImgFormEl.submit();
   }
-});
+};
+
+export {uploadImgFormEl, onEditFormSubmit};
