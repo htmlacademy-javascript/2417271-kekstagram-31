@@ -1,12 +1,11 @@
 import { isEscapeKey, showModal, closeModal } from './utils.js';
-import { uploadImgFormEl, onEditFormSubmit } from './validate-form.js';
+import {uploadImgFormEl, hashtagsFieldEl, descriptionFieldEl, onEditFormSubmit} from './validate-form.js';
 import { editImgEl, resetScale, onScaleSmallerClick, onScaleBiggererClick, resetEffect, onEffectChange } from './edit-upload-img.js';
 
 const uploadImgButtonEl = uploadImgFormEl.querySelector('#upload-file');
 const closeEditImgButtonEl = editImgEl.querySelector('.img-upload__cancel');
 const scaleSmallerButtonEl = editImgEl.querySelector('.scale__control--smaller');
 const scaleBiggerButtonEl = editImgEl.querySelector('.scale__control--bigger');
-// const effectsListEl = editImgEl.querySelector('.effects__list');
 
 const showFullscreenEditor = () => {
   // console.log(uploadImgButtonEl.value); - как-то подставим это фото в editorPreview
@@ -35,7 +34,7 @@ const closeFullscreenEditor = () => {
 function onEscKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    if (editImgEl.querySelector('.text__hashtags:focus') || editImgEl.querySelector('.text__description:focus')) {
+    if (document.activeElement === hashtagsFieldEl || document.activeElement === descriptionFieldEl) {
       evt.stopPropagation();
     } else {
       closeFullscreenEditor();
