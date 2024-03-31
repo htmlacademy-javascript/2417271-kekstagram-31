@@ -11,6 +11,7 @@ const fullscreenCommentsTotalCountEl = fullscreenPostEl.querySelector('.social__
 
 const commentsFragment = document.createDocumentFragment();
 
+
 const renderComment = ({ avatar, message, name }) => {
   const newComment = createElement('li', 'social__comment');
   const newCommentAvatar = createElement('img', 'social__picture');

@@ -1,7 +1,9 @@
-import {getDataToGenerateThread} from './data.js';
-import {getRandomLimitInteger,
+import { getDataToGenerateThread } from './data.js';
+import {
+  getRandomLimitInteger,
   createUniqueIdGenerator,
-  getRandomArrayElement} from './utils.js';
+  getRandomArrayElement
+} from './utils.js';
 
 // основные функции
 const { DESCRIPTIONS, COMMENT_MESSAGES, NAMES, SETTING_POSTS, SETTING_COMMENT } = getDataToGenerateThread();
@@ -23,7 +25,6 @@ const generateComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-
 const generatePost = (_, index) => ({
   id: index + 1,
   url: `photos/${index + 1}.jpg`,
@@ -36,4 +37,4 @@ const generateThread = () => Array.from({ length: SETTING_POSTS.amountPosts }, g
 
 const currentThread = generateThread();
 
-export {currentThread};
+export { currentThread };
