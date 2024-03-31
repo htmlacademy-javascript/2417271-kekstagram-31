@@ -48,7 +48,7 @@ const EffectsSetting = {
 };
 
 const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
-const editorPreview = editImgEl.querySelector('.img-upload__preview').querySelector('img');
+const editorPreview = editImgEl.querySelector('.img-upload__preview img');
 const scaleInpEl = editImgEl.querySelector('.scale__control--value');
 const sliderContainenrEl = editImgEl.querySelector('.img-upload__effect-level');
 const effectInpEl = sliderContainenrEl.querySelector('#effect-level');
