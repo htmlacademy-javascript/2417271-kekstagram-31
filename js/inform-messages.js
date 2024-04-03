@@ -1,3 +1,18 @@
+const INFORM_SHOWTIME = 5000;
+const ExchangeCondition = {
+  GET_ERROR: {
+    condition: 'dataError',
+    errorText: 'Не удалось загрузить данные'
+  },
+  POST_ERROR: {
+    condition: 'postError',
+    errorText: 'Не удалось отправить форму'
+  },
+  POST_SUCCESS: {
+    condition: 'postSuccsess'
+  }
+};
+
 const body = document.querySelector('body');
 const errorPostEl = document.querySelector('#error').content.querySelector('.error');
 const succsessPostEl = document.querySelector('#success').content.querySelector('.success');
@@ -13,8 +28,11 @@ const addInformMessage = (condition) => {
       break;
     case ('dataError'):
       body.append(errorGetDataEl);
+      setTimeout(() => {
+        errorGetDataEl.remove();
+      }, INFORM_SHOWTIME);
       break;
   }
 };
 
-export { addInformMessage };
+export { ExchangeCondition, addInformMessage };
