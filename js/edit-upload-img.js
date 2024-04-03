@@ -69,25 +69,17 @@ const resetScale = () => {
 };
 
 const onScaleSmallerClick = () => {
-  switch (currentScaleValue) {
-    case SCALE_MIN_LIMIT:
-      currentScaleValue = SCALE_MIN_LIMIT;
-      break;
-    default:
-      currentScaleValue -= SCALE_STEP;
+  if (currentScaleValue > SCALE_MIN_LIMIT) {
+    currentScaleValue -= SCALE_STEP;
+    editScale();
   }
-  editScale();
 };
 
 const onScaleBiggererClick = () => {
-  switch (currentScaleValue) {
-    case SCALE_MAX_LIMIT:
-      currentScaleValue = SCALE_MAX_LIMIT;
-      break;
-    default:
-      currentScaleValue += SCALE_STEP;
+  if (currentScaleValue < SCALE_MAX_LIMIT) {
+    currentScaleValue += SCALE_STEP;
+    editScale();
   }
-  editScale();
 };
 
 // редактор эффектов
