@@ -143,4 +143,11 @@ const onEffectChange = (evt) => {
   }
 };
 
-export { editImgEl, resetScale, onScaleSmallerClick, onScaleBiggererClick, resetEffect, onEffectChange };
+export {
+  editImgEl,
+  resetScale,
+  onScaleSmallerClick,
+  onScaleBiggererClick,
+  resetEffect,
+  onEffectChange
+};

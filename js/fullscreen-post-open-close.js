@@ -1,5 +1,4 @@
 import { isEscapeKey, showModal, closeModal } from './utils.js';
-// import { currentThread } from './generate-thread.js';
 import { renderFullscreenPost } from './render-fullscreen-post.js';
 import { clearComments, onCommentLoudButtonClick } from './render-comments.js';
 
@@ -11,7 +10,6 @@ const showFullscreenPost = () => {
   showModal(fullscreenPostEl);
   document.addEventListener('keydown', onEscKeydown);
   closeFullscreenButtonEl.addEventListener('click', onCloseButtonClick);
-  fullscreenPostEl.addEventListener('click', onBackdropClick);
   commentsLoaderEl.addEventListener('click', onCommentLoudButtonClick);
 };
 
@@ -20,7 +18,6 @@ const closeFullscreenPost = () => {
   clearComments();
   document.removeEventListener('keydown', onEscKeydown);
   closeFullscreenButtonEl.removeEventListener('click', onCloseButtonClick);
-  fullscreenPostEl.removeEventListener('click', onBackdropClick);
   commentsLoaderEl.addEventListener('click', onCommentLoudButtonClick);
 };
 
@@ -31,12 +28,6 @@ function onCloseButtonClick() {
 function onEscKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeFullscreenPost();
-  }
-}
-
-function onBackdropClick(evt) {
-  if (evt.target.matches('.big-picture')) {
     closeFullscreenPost();
   }
 }

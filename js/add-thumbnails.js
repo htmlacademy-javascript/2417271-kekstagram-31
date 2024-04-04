@@ -5,7 +5,7 @@ const thumbnailTemplate = document.querySelector('#picture').content.querySelect
 
 const thumbnailsFragment = document.createDocumentFragment();
 
-const createThumbnail = ({id, url, description, comments, likes}) => {
+const createThumbnail = ({ id, url, description, comments, likes }) => {
   const newThumbnail = thumbnailTemplate.cloneNode(true);
   const thumbnailImg = newThumbnail.querySelector('.picture__img');
   const thumbnailComments = newThumbnail.querySelector('.picture__comments');
@@ -26,4 +26,4 @@ const addThumbnails = (thumbnailsData) => {
   thumbnailsContainerEl.addEventListener('click', onThumbnailClick.bind(null, thumbnailsData));
 };
 
-export {thumbnailsContainerEl,addThumbnails};
+export { thumbnailsContainerEl, addThumbnails };
