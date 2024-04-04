@@ -1,4 +1,4 @@
-import { isEscapeKey } from './utils';
+import { isEscapeKey } from './utils.js';
 
 const INFORM_SHOWTIME = 5000;
 const ExchangeCondition = {
