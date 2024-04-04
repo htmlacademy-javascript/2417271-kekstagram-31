@@ -1,7 +1,9 @@
 import { isEscapeKey, showModal, closeModal } from './utils.js';
 import { errorPostEl } from './inform-messages.js';
 import {
+  uploadImgButtonEl,
   editImgEl,
+  addPreview,
   resetScale,
   onScaleSmallerClick,
   onScaleBiggererClick,
@@ -10,7 +12,7 @@ import {
 } from './edit-upload-img.js';
 
 const uploadImgFormEl = document.querySelector('#upload-select-image');
-const uploadImgButtonEl = uploadImgFormEl.querySelector('#upload-file');
+
 const closeEditImgButtonEl = editImgEl.querySelector('.img-upload__cancel');
 const scaleSmallerButtonEl = editImgEl.querySelector('.scale__control--smaller');
 const scaleBiggerButtonEl = editImgEl.querySelector('.scale__control--bigger');
@@ -18,7 +20,6 @@ const hashtagsFieldEl = editImgEl.querySelector('#hashtags');
 const descriptionFieldEl = editImgEl.querySelector('#description');
 
 const showFullscreenEditor = () => {
-  // console.log(uploadImgButtonEl.value); - как-то подставим это фото в editorPreview
   resetEffect();
   document.addEventListener('keydown', onEscKeydown);
   closeEditImgButtonEl.addEventListener('click', onCloseButtonClick);
@@ -54,12 +55,13 @@ function onCloseButtonClick() {
   closeFullscreenEditor();
 }
 
-function onuploudButtionClick(evt) {
+function onUploudButtionClick(evt) {
   evt.preventDefault();
+  addPreview();
   showModal(editImgEl);
   showFullscreenEditor();
 }
 
-uploadImgButtonEl.addEventListener('change', onuploudButtionClick);
+uploadImgButtonEl.addEventListener('change', onUploudButtionClick);
 
 export { closeFullscreenEditor };
