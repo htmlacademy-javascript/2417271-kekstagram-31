@@ -1,5 +1,6 @@
 import { uploadImgFormEl } from './validate-form.js';
 
+const UPLOAD_IMG_TYPES = ['jpg', 'jpeg', 'png'];
 const SCALE_STEP = 25;
 const SCALE_MIN_LIMIT = 25;
 const SCALE_MAX_LIMIT = 100;
@@ -47,12 +48,27 @@ const EffectsSetting = {
   },
 };
 
+const uploadImgButtonEl = uploadImgFormEl.querySelector('#upload-file');
 const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
 const editorPreview = editImgEl.querySelector('.img-upload__preview img');
+const effectPreviewList = editImgEl.querySelectorAll('.effects__preview');
 const scaleInpEl = editImgEl.querySelector('.scale__control--value');
 const sliderContainenrEl = editImgEl.querySelector('.img-upload__effect-level');
 const effectInpEl = sliderContainenrEl.querySelector('#effect-level');
 const effectSlider = sliderContainenrEl.querySelector('.effect-level__slider');
+
+// загрузка превью
+const addPreview = () => {
+  const file = uploadImgButtonEl.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = UPLOAD_IMG_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    const fileUrl = URL.createObjectURL(file);
+    editorPreview.src = fileUrl;
+    effectPreviewList.forEach((preview) => (preview.style.backgroundImage = `url(${fileUrl})`));
+  }
+};
+
 
 // редактор масштаба изображения
 let currentScaleValue = parseInt(scaleInpEl.value, 10);
@@ -144,7 +160,9 @@ const onEffectChange = (evt) => {
 };
 
 export {
+  uploadImgButtonEl,
   editImgEl,
+  addPreview,
   resetScale,
   onScaleSmallerClick,
   onScaleBiggererClick,
