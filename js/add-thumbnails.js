@@ -1,4 +1,4 @@
-import { onThumbnailClick } from './fullscreen-post-open-close.js';
+import { onThumbnailClick, setThumbnails } from './fullscreen-post-open-close.js';
 
 const thumbnailsContainerEl = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -20,10 +20,18 @@ const createThumbnail = ({ id, url, description, comments, likes }) => {
   thumbnailsFragment.append(newThumbnail);
 };
 
+const removeThumbnails = () => {
+  const thumbnails = Array.from(thumbnailsContainerEl.querySelectorAll('.picture'));
+  thumbnails.forEach((thumbnail) => thumbnail.remove());
+  thumbnailsContainerEl.removeEventListener('click', onThumbnailClick);
+};
+
 const addThumbnails = (thumbnailsData) => {
+  removeThumbnails();
   thumbnailsData.forEach((thumbnailObj) => createThumbnail(thumbnailObj));
   thumbnailsContainerEl.append(thumbnailsFragment);
-  thumbnailsContainerEl.addEventListener('click', onThumbnailClick.bind(null, thumbnailsData));
+  setThumbnails(thumbnailsData);
+  thumbnailsContainerEl.addEventListener('click', onThumbnailClick);
 };
 
 export { thumbnailsContainerEl, addThumbnails };
