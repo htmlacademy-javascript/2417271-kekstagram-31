@@ -6,6 +6,8 @@ const fullscreenPostEl = document.querySelector('.big-picture');
 const closeFullscreenButtonEl = document.querySelector('.big-picture__cancel');
 const commentsLoaderEl = fullscreenPostEl.querySelector('.social__comments-loader');
 
+let thumbnailsData = [];
+
 const showFullscreenPost = () => {
   showModal(fullscreenPostEl);
   document.addEventListener('keydown', onEscKeydown);
@@ -32,14 +34,18 @@ function onEscKeydown(evt) {
   }
 }
 
-const onThumbnailClick = (dataArr, evt) => {
+const onThumbnailClick = (evt) => {
   const clickedEl = evt.target.closest('.picture');
   if (clickedEl) {
     evt.preventDefault();
-    const clickedElData = dataArr.find((element) => element.id === Number(clickedEl.dataset.photoId));
+    const clickedElData = thumbnailsData.find((element) => element.id === Number(clickedEl.dataset.photoId));
     renderFullscreenPost(clickedElData);
     showFullscreenPost();
   }
 };
 
-export { onThumbnailClick };
+const setThumbnails = (dataArr) => {
+  thumbnailsData = dataArr;
+};
+
+export { onThumbnailClick, setThumbnails };

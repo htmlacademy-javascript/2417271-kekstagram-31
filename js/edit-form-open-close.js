@@ -10,6 +10,7 @@ import {
   resetEffect,
   onEffectChange
 } from './edit-upload-img.js';
+import { pristine } from './validate-form.js';
 
 const uploadImgFormEl = document.querySelector('#upload-select-image');
 
@@ -29,8 +30,9 @@ const showFullscreenEditor = () => {
 };
 
 const closeFullscreenEditor = () => {
-  uploadImgFormEl.reset();
   closeModal(editImgEl);
+  pristine.reset();
+  uploadImgFormEl.reset();
   resetScale();
   resetEffect();
   document.removeEventListener('keydown', onEscKeydown);

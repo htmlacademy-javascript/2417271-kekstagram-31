@@ -30,7 +30,7 @@ const isValidHashtags = (value) => {
     errorMessage = '';
     return true;
   }
-  const hashtags = value.trim().toLowerCase().split(' ');
+  const hashtags = value.trim().toLowerCase().split(' ').filter(Boolean);
   const hashtagPattern = /^#[a-zа-яё0-9]{1,19}$/i;
   if (hashtags.length > HASHTAG_LIMIT) {
     errorMessage = 'Превышено количество хэштегов';
@@ -81,10 +81,13 @@ const setEditFormSubmit = (onSuccess) => {
           addInformMessage(ExchangeCondition.POST_ERROR.condition);
         }
         )
-        .finally(unblockSubmitButton());
+        .finally(() => {
+          unblockSubmitButton();
+          pristine.reset();
+        });
     }
   });
 };
 
 
-export { uploadImgFormEl, setEditFormSubmit };
+export { uploadImgFormEl, pristine, setEditFormSubmit };
