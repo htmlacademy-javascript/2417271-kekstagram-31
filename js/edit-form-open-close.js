@@ -45,7 +45,9 @@ const closeFullscreenEditor = () => {
 function onEscKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    if (document.activeElement === hashtagsFieldEl || document.activeElement === descriptionFieldEl || errorPostEl.isConnected) {
+    if (document.activeElement === hashtagsFieldEl
+      || document.activeElement === descriptionFieldEl
+      || errorPostEl.isConnected) {
       evt.stopPropagation();
     } else {
       closeFullscreenEditor();
@@ -57,13 +59,13 @@ function onCloseButtonClick() {
   closeFullscreenEditor();
 }
 
-function onUploudButtionClick(evt) {
+function onUploadButtionClick(evt) {
   evt.preventDefault();
   addPreview();
   showModal(editImgEl);
   showFullscreenEditor();
 }
 
-uploadImgButtonEl.addEventListener('change', onUploudButtionClick);
+uploadImgButtonEl.addEventListener('change', onUploadButtionClick);
 
 export { closeFullscreenEditor };

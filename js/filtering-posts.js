@@ -2,7 +2,7 @@ import { addThumbnails } from './add-thumbnails.js';
 import { generateUniqueArray, debounce } from './utils.js';
 
 const AMOUNT_RANDOM_POSTS = 10;
-const DEBOUNSE_DELAY = 500;
+const DEBOUNCE_DELAY = 500;
 const ACTIVE_FILTER = 'img-filters__button--active';
 
 const Filters = {
@@ -37,7 +37,7 @@ const filteringEl = document.querySelector('.img-filters');
 const filteringForm = filteringEl.querySelector('.img-filters__form');
 const filtersList = filteringForm.querySelectorAll('.img-filters__button');
 
-const debounceRender = debounce(addThumbnails, DEBOUNSE_DELAY);
+const debounceRender = debounce(addThumbnails, DEBOUNCE_DELAY);
 let defaultPostsData = [];
 
 const onFilterClick = (evt) => {

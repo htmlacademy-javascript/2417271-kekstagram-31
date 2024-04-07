@@ -11,7 +11,7 @@ const ExchangeCondition = {
     errorText: 'Не удалось отправить форму'
   },
   POST_SUCCESS: {
-    condition: 'postSuccsess'
+    condition: 'postSuccess'
   }
 };
 
@@ -64,7 +64,7 @@ const addInformMessage = (condition) => {
     case ('postError'):
       addMessage(errorPostEl);
       break;
-    case ('postSuccsess'):
+    case ('postSuccess'):
       addMessage(succsessPostEl);
       break;
     case ('dataError'):
