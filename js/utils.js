@@ -40,7 +40,7 @@ const closeModal = (modalElement) => {
 
 const checkStringLength = (string = '', lenght = 1) => string.length <= lenght;
 
-function debounce (callback, timeoutDelay = 500) {
+function debounce(callback, timeoutDelay = 500) {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);

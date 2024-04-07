@@ -53,9 +53,9 @@ const editImgEl = uploadImgFormEl.querySelector('.img-upload__overlay');
 const editorPreview = editImgEl.querySelector('.img-upload__preview img');
 const effectPreviewList = editImgEl.querySelectorAll('.effects__preview');
 const scaleInpEl = editImgEl.querySelector('.scale__control--value');
-const sliderContainenrEl = editImgEl.querySelector('.img-upload__effect-level');
-const effectInpEl = sliderContainenrEl.querySelector('#effect-level');
-const effectSlider = sliderContainenrEl.querySelector('.effect-level__slider');
+const sliderContainerEl = editImgEl.querySelector('.img-upload__effect-level');
+const effectInpEl = sliderContainerEl.querySelector('#effect-level');
+const effectSlider = sliderContainerEl.querySelector('.effect-level__slider');
 
 // загрузка превью
 const addPreview = () => {
@@ -129,13 +129,13 @@ const getEffectValue = () => {
 
 const resetEffect = () => {
   editorPreview.style.removeProperty('filter');
-  sliderContainenrEl.classList.add('hidden');
+  sliderContainerEl.classList.add('hidden');
   effectInpEl.value = '';
   effectSlider.noUiSlider.off('update', getEffectValue);
 };
 
 const changeEffect = (effectValue) => {
-  sliderContainenrEl.classList.remove('hidden');
+  sliderContainerEl.classList.remove('hidden');
   const { minLimit, maxLimit, step, start } = EffectsSetting[effectValue.toUpperCase()];
   effectSlider.noUiSlider.updateOptions({
     range: {
